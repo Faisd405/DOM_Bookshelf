@@ -37,7 +37,8 @@
                 </div>
                 <div class="form-group">
                     <label>Tahun Rilis</label>
-                    <input type="number" min="1990" max="2022" class="form-control" id="tahun" placeholder="Tahun" required />
+                    <input type="number" min="1990" max="2022" class="form-control" id="tahun" placeholder="Tahun"
+                        required />
                 </div>
                 <div class="form-group">
                     <div class="form-check">
@@ -73,7 +74,6 @@
         <div class="card card-body">
             <h3>Belum Selesai Dibaca</h3>
             <hr>
-
             <div id="incompleteBookshelfList">
             </div>
         </div>
@@ -83,10 +83,40 @@
         <div class="card card-body">
             <h3>Sudah Selesai Dibaca</h3>
             <hr>
-
             <div id="completeBookshelfList">
             </div>
+        </div>
 
+        <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditLabel">Edit Data</h5>
+                    </div>
+                    <form id="editForm">
+                        <div class="modal-body">
+                            <input type="number" id="id-book" hidden>
+                            <div class="form-group">
+                                <label for="title-name" class="col-form-label">Judul:</label>
+                                <input type="text" class="form-control" id="title-book">
+                            </div>
+                            <div class="form-group">
+                                <label for="author-text" class="col-form-label">Penulis:</label>
+                                <input class="form-control" id="author-book"></input>
+                            </div>
+                            <div class="form-group">
+                                <label for="year-text" class="col-form-label">Tahun Rilis:</label>
+                                <input type="number" class="form-control" id="year-book"></input>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Edit Data</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -96,6 +126,24 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <!-- Modal Javascript With jQuery & Bootstrap -->
+    <script>
+        $('#modalEdit').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var title = button.data('title') // Extract info from data-* attributes
+            var author = button.data('author')
+            var year = button.data('year')
+            var id = button.data('id')
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('Edit Data ' + title)
+            modal.find('.modal-body #title-book').val(title)
+            modal.find('.modal-body #author-book').val(author)
+            modal.find('.modal-body #year-book').val(year)
+            modal.find('.modal-body #id-book').val(id)
+        })
+    </script>
 </body>
 
 </html>

@@ -43,6 +43,12 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         searchBookshelf();
     });
+
+    const editForm = document.getElementById('editForm');
+    editForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        editBookshelf();
+    });
 });
 
 // Add Bookshelf
@@ -135,9 +141,19 @@ function makeBookshelf(bookshelfObject) {
             deleteTask(bookshelfObject.id);
         });
 
+        const editButton = document.createElement('button');
+        editButton.classList.add('btn', 'btn-sm', 'btn-outline-info', 'ml-2');
+        editButton.innerText = 'Edit';
+        editButton.setAttribute('data-toggle', 'modal');
+        editButton.setAttribute('data-target', '#modalEdit');
+        editButton.setAttribute('data-id', bookshelfObject.id);
+        editButton.setAttribute('data-title', bookshelfObject.title);
+        editButton.setAttribute('data-author', bookshelfObject.author);
+        editButton.setAttribute('data-year', bookshelfObject.year);
+
         const buttonContainer = document.createElement('div');
         buttonContainer.classList.add('btn-group', 'float-right');
-        buttonContainer.append(undoButton, trashButton);
+        buttonContainer.append(undoButton, trashButton, editButton);
 
         container.append(buttonContainer);
     } else {
@@ -161,9 +177,24 @@ function makeBookshelf(bookshelfObject) {
             deleteTask(bookshelfObject.id);
         });
 
+        const editButton = document.createElement('button');
+        editButton.classList.add('btn', 'btn-sm', 'btn-outline-info', 'ml-2');
+        editButton.innerText = 'Edit';
+        editButton.setAttribute('data-toggle', 'modal');
+        editButton.setAttribute('data-target', '#modalEdit');
+        editButton.setAttribute('data-id', bookshelfObject.id);
+        editButton.setAttribute('data-title', bookshelfObject.title);
+        editButton.setAttribute('data-author', bookshelfObject.author);
+        editButton.setAttribute('data-year', bookshelfObject.year);
+
+        // editButton.addEventListener('click', function () {
+        //     editTask(bookshelfObject.id);
+        // }
+        // );
+
         const buttonContainer = document.createElement('div');
         buttonContainer.classList.add('btn-group', 'float-right');
-        buttonContainer.append(undoButton, trashButton);
+        buttonContainer.append(undoButton, trashButton, editButton);
 
         container.append(buttonContainer);
     }
@@ -234,6 +265,27 @@ function saveData() {
     }
 }
 
+function editBookshelf() {
+    const id = document.getElementById('id-book').value;
+    const title = document.getElementById('title-book').value;
+    const author = document.getElementById('author-book').value;
+    const year = document.getElementById('year-book').value;
+
+    for (let i = 0; i < bookShelf.length; i++) {
+        if (parseInt(bookShelf[i].id) === parseInt(id)) {
+            bookShelf[i].title = title;
+            bookShelf[i].author = author;
+            bookShelf[i].year = year;
+            document.dispatchEvent(new Event(RENDER_EVENT));
+            saveData();
+            
+            // Close modal
+            $('#modalEdit').modal('hide');
+            
+            alertEdit(title);
+        }
+    }
+}
 
 function alertSuccess(title) {
     let alertSuccess = document.getElementById('alert-success')
@@ -249,4 +301,8 @@ function alertSuccess(title) {
 
 function alertDelete(title) {
     alert(`${title} berhasil dihapus.`);
+}
+
+function alertEdit(title) {
+    alert(`${title} berhasil diedit.`);
 }
