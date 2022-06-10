@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         addBookshelf();
     });
-    
+
     if (isStorageExist()) {
         loadDataFromStorage();
     }
@@ -58,6 +58,7 @@ function addBookshelf() {
 
     document.dispatchEvent(new Event(RENDER_EVENT));
     saveData();
+    alertSuccess(title);
 }
 
 // Generate ID from Date
@@ -193,9 +194,11 @@ function undoTaskFromCompleted(id) {
 function deleteTask(id) {
     for (let i = 0; i < bookShelf.length; i++) {
         if (bookShelf[i].id === id) {
+            let titleDelete = bookShelf[i].title;
             bookShelf.splice(i, 1);
             document.dispatchEvent(new Event(RENDER_EVENT));
             saveData();
+            alertDelete(titleDelete);
         }
     }
 }
@@ -229,4 +232,21 @@ function saveData() {
         localStorage.setItem(STORAGE_KEY, parsed);
         document.dispatchEvent(new Event(SAVED_EVENT));
     }
+}
+
+
+function alertSuccess(title) {
+    let alertSuccess = document.getElementById('alert-success')
+
+    alertSuccess.innerHTML = '';
+    alertSuccess.classList.add('alert', 'alert-success', 'alert-dismissible', 'fade', 'show');
+    alertSuccess.innerHTML = `<strong>${title}</strong> berhasil ditambahkan.`;
+    setTimeout(function () {
+        alertSuccess.classList.remove('alert', 'alert-success', 'alert-dismissible', 'fade', 'show');
+        alertSuccess.innerHTML = '';
+    } , 3000);
+}
+
+function alertDelete(title) {
+    alert(`${title} berhasil dihapus.`);
 }
